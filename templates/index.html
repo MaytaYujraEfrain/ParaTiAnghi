@@ -1,0 +1,779 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+  <title>Para {{ nombre }} 🌹</title>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Poppins:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='flores/img/image.png') }}" />
+  <style>
+    :root {
+      --ruby-deep: #881337;
+      --ruby: #9d174d;
+      --rose: #f43f5e;
+      --pink: #f472b6;
+      --blush: #fecdd3;
+      --gold: #f59e0b;
+      --font-display: "Playfair Display", serif;
+      --font-script: "Cormorant Garamond", serif;
+      --font-body: "Poppins", sans-serif;
+      --ease-pop: cubic-bezier(0.34, 1.56, 0.64, 1);
+      --shadow-xl: 0 28px 90px rgba(136, 19, 55, 0.18);
+      --shadow-lg: 0 18px 55px rgba(136, 19, 55, 0.16);
+      --shadow-md: 0 12px 28px rgba(136, 19, 55, 0.14);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html,
+    body {
+      width: 100%;
+      overflow-x: hidden;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: linear-gradient(135deg,
+          #fda4af 0%,
+          #fecdd3 35%,
+          #ffe4e6 65%,
+          #fff1f2 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+      color: #0f172a;
+    }
+
+    /* INTRO flores */
+    #intro {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: #000;
+      display: flex;
+      transition: all 1s var(--ease-pop);
+    }
+
+    #intro.fade-out {
+      opacity: 0;
+      visibility: hidden;
+      transform: scale(1.03);
+    }
+
+    #flowerFrame {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    .introOverlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top,
+          rgba(0, 0, 0, 0.62) 0%,
+          rgba(0, 0, 0, 0.1) 55%,
+          rgba(0, 0, 0, 0.4) 100%);
+      pointer-events: none;
+    }
+
+    .introUI {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 12px;
+      padding: 22px 16px 26px;
+    }
+
+    .introHint {
+      color: rgba(255, 255, 255, 0.86);
+      font-weight: 800;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      font-size: 0.72rem;
+    }
+
+    .introTitle {
+      font-family: var(--font-display);
+      color: #fff;
+      font-size: 1.75rem;
+      text-align: center;
+      text-shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
+      max-width: 520px;
+    }
+
+    .introBtn {
+      width: min(92vw, 420px);
+      border: 0;
+      border-radius: 999px;
+      padding: 16px 18px;
+      font-weight: 900;
+      font-family: var(--font-body);
+      cursor: pointer;
+      color: #0b1220;
+      background: linear-gradient(135deg, #fde68a, #f59e0b);
+      box-shadow: 0 20px 55px rgba(0, 0, 0, 0.35);
+      transition: transform 0.25s var(--ease-pop);
+    }
+
+    .introBtn:active {
+      transform: scale(0.98);
+    }
+
+    /* Card */
+    main {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      z-index: 10;
+      position: relative;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 560px;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(18px);
+      border-radius: 44px;
+      padding: 48px 26px;
+      box-shadow: var(--shadow-xl);
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      text-align: center;
+      opacity: 0;
+      transform: translateY(34px) scale(0.97);
+      transition: all 1.2s var(--ease-pop);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card.visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    h1 {
+      font-family: var(--font-display);
+      font-size: 4rem;
+      background: linear-gradient(135deg,
+          var(--ruby) 0%,
+          var(--rose) 55%,
+          var(--pink) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+    }
+
+    .subtitle {
+      margin-top: 10px;
+      font-size: 0.82rem;
+      letter-spacing: 4px;
+      color: var(--ruby-deep);
+      font-weight: 900;
+      opacity: 0.78;
+    }
+
+    /* Player */
+    .player2 {
+      background: linear-gradient(145deg,
+          rgba(255, 255, 255, 0.72),
+          rgba(254, 205, 211, 0.26));
+      border: 1px solid rgba(136, 19, 55, 0.18);
+      border-radius: 34px;
+      padding: 22px 18px;
+      margin: 30px 0 22px;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .player2-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .player2-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.74rem;
+      letter-spacing: 0.28em;
+      font-weight: 900;
+      color: var(--ruby-deep);
+      opacity: 0.86;
+    }
+
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 99px;
+      background: linear-gradient(135deg, var(--rose), var(--pink));
+      box-shadow: 0 0 0 6px rgba(244, 63, 94, 0.1);
+    }
+
+    .player2-title {
+      font-family: var(--font-script);
+      font-weight: 700;
+      font-size: 1.12rem;
+      color: #475569;
+      font-style: italic;
+    }
+
+    .player2-controls {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      margin-top: 16px;
+    }
+
+    .p2-btn {
+      width: 62px;
+      height: 62px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      background: linear-gradient(145deg, var(--ruby), var(--ruby-deep));
+      color: #fff;
+      font-size: 1.2rem;
+      box-shadow: 0 16px 34px rgba(136, 19, 55, 0.3);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.25s var(--ease-pop);
+    }
+
+    .p2-btn:active {
+      transform: scale(0.98);
+    }
+
+    .p2-track {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .p2-progress {
+      width: 100%;
+      height: 12px;
+      background: rgba(244, 63, 94, 0.14);
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid rgba(136, 19, 55, 0.12);
+      cursor: pointer;
+    }
+
+    .p2-progress-fill {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg,
+          var(--rose),
+          var(--pink),
+          var(--gold));
+      border-radius: 999px;
+      transition: width 0.1s linear;
+    }
+
+    .p2-meta {
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: var(--ruby);
+    }
+
+    .player2-bottom {
+      margin-top: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .p2-vol {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: #64748b;
+    }
+
+    .p2-vol input[type="range"] {
+      flex: 1;
+      accent-color: var(--rose);
+      cursor: pointer;
+    }
+
+    .p2-hint {
+      font-family: var(--font-script);
+      font-size: 1.12rem;
+      color: #94a3b8;
+      font-style: italic;
+      text-align: center;
+    }
+
+    .p2-hint.on {
+      color: var(--ruby-deep);
+      font-weight: 700;
+    }
+
+    .msg {
+      margin-top: 10px;
+      line-height: 1.75;
+      color: #334155;
+      font-size: 1.05rem;
+    }
+
+    .msg p {
+      margin-bottom: 12px;
+    }
+
+    .msg strong {
+      color: var(--ruby);
+      font-weight: 900;
+    }
+
+    .quote-box {
+      background: linear-gradient(135deg,
+          rgba(254, 205, 211, 0.34),
+          rgba(251, 113, 133, 0.16));
+      border-left: 4px solid var(--rose);
+      border-radius: 18px;
+      padding: 18px;
+      margin: 18px 0;
+      box-shadow: var(--shadow-md);
+    }
+
+    .quote-box p {
+      font-family: var(--font-script);
+      font-size: 1.22rem;
+      font-style: italic;
+      color: var(--ruby-deep);
+      line-height: 1.55;
+      margin: 0;
+    }
+
+    .question {
+      margin-top: 14px;
+      font-size: 1.3rem;
+      color: var(--ruby);
+      font-family: var(--font-script);
+      font-weight: 900;
+      font-style: italic;
+    }
+
+    .actions {
+      margin-top: 26px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      min-height: 140px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 18px 20px;
+      border-radius: 999px;
+      border: 0;
+      font-family: var(--font-body);
+      font-weight: 800;
+      /* Bold readable */
+      cursor: pointer;
+      font-size: 1.1rem;
+      letter-spacing: 0.02em;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.25s var(--ease-pop);
+    }
+
+    .btn:active {
+      transform: scale(0.96);
+    }
+
+    /* Gradient & Glow for Primary Buttons */
+    .yes,
+    .introBtn {
+      background: linear-gradient(135deg,
+          #f43f5e 0%,
+          #e11d48 50%,
+          #be123c 100%);
+      /* Deep Rose Gradient */
+      color: #fff;
+      box-shadow:
+        0 20px 40px -10px rgba(225, 29, 72, 0.5),
+        0 0 0 2px rgba(255, 255, 255, 0.2) inset;
+      /* Glossy inset */
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    .yes:hover,
+    .introBtn:hover {
+      box-shadow:
+        0 25px 50px -12px rgba(225, 29, 72, 0.6),
+        0 0 0 2px rgba(255, 255, 255, 0.4) inset;
+      transform: translateY(-2px);
+    }
+
+    /* Glassy/Clean No Button */
+    .no {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(10px);
+      color: #64748b;
+      border: 1px solid rgba(226, 232, 240, 0.8);
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .no:hover {
+      background: #fff;
+      color: #ef4444;
+      /* Red warning text on hover */
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+    }
+
+    #floatMsg {
+      position: fixed;
+      z-index: 100;
+      background: linear-gradient(135deg, var(--ruby), var(--rose));
+      color: #fff;
+      padding: 14px 18px;
+      border-radius: 999px;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.25s var(--ease-pop);
+      font-size: 1rem;
+      font-weight: 900;
+      box-shadow: 0 18px 46px rgba(136, 19, 55, 0.34);
+      transform: translateY(-10px) scale(0.94);
+    }
+
+    #floatMsg.show {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    @media (max-width: 480px) {
+      .card {
+        padding: 40px 20px;
+        border-radius: 40px;
+      }
+
+      h1 {
+        font-size: 3.2rem;
+      }
+
+      .introTitle {
+        font-size: 1.55rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <audio id="audio" preload="auto" loop playsinline>
+    <source src="{{ url_for('static', filename='audio/audio3.mp3') }}" type="audio/mpeg" />
+  </audio>
+
+  <section id="intro">
+    <!-- allow="autoplay" ayuda a permitir autoplay en iframes bajo políticas [web:176] -->
+    <iframe id="flowerFrame" src="/flower-intro" title="Flores amarillas" allow="autoplay"></iframe>
+    <div class="introOverlay"></div>
+
+    <div class="introUI">
+      <div class="introHint">Para {{ nombre }}</div>
+      <div class="introTitle">TE QUIERO MUCHO</div>
+      <button class="introBtn" id="openBtn" type="button">Abrir</button>
+    </div>
+  </section>
+
+  <div id="floatMsg"></div>
+
+  <main>
+    <section class="card" id="card">
+      <header>
+        <h1>{{ nombre }}</h1>
+        <p class="subtitle">Desde mi corazón</p>
+      </header>
+
+      <div class="player2">
+        <div class="player2-top">
+          <div class="player2-badge"><span class="dot"></span> Solo Para Ti</div>
+          <div class="player2-title">Con amor 💝</div>
+        </div>
+
+        <div class="player2-controls">
+          <button class="p2-btn" id="p2Play" type="button">
+            <span id="p2Icon">▶</span>
+          </button>
+
+          <div class="p2-track">
+            <div class="p2-progress" id="p2Progress">
+              <div class="p2-progress-fill" id="p2Fill"></div>
+            </div>
+            <div class="p2-meta">
+              <span id="p2Time">0:00</span>
+              <span id="p2Dur">0:00</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="player2-bottom">
+          <label class="p2-vol">
+            <span>🔊 Sonido</span>
+            <input id="p2Vol" type="range" min="0" max="1" step="0.01" value="0.65" />
+          </label>
+          <div class="p2-hint" id="p2Hint">Desde el corazón</div>
+        </div>
+      </div>
+
+      <div class="msg">
+        <p>
+          <strong>Dicen que las persona llegan a tu vida por una razón.</strong> Tú
+          llegaste a la mía y lo cambiaste todo.
+        </p>
+        <div class="quote-box">
+          <p>
+            "No te pido que borres el pasado, solo que me permitas escribir contigo un futuro más bonito."
+          </p>
+        </div>
+        <p>
+          Quiero volver a empezar, pero esta vez hacerlo bien.
+          <strong>Con calma, con respeto y demostrando con hechos lo que mi corazón siempre sintió.</strong>.
+        </p>
+        <p class="question">¿Lo intentamos con el corazón en paz? 💝💞
+        </p>
+      </div>
+
+      <div class="actions">
+        <form method="POST" action="/respuesta">
+          <button class="btn yes" type="submit" name="choice" value="yes">
+            Sí, intentemoslo ❤️
+          </button>
+        </form>
+        <button class="btn no" id="btnNo" type="button">
+          Necesito tiempo
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const intro = document.getElementById("intro");
+    const card = document.getElementById("card");
+    const openBtn = document.getElementById("openBtn");
+
+    // Audio carta (manejo de play() Promise) [web:173]
+    const audio = document.getElementById("audio");
+    const p2Play = document.getElementById("p2Play");
+    const p2Icon = document.getElementById("p2Icon");
+    const p2Fill = document.getElementById("p2Fill");
+    const p2Time = document.getElementById("p2Time");
+    const p2Dur = document.getElementById("p2Dur");
+    const p2Vol = document.getElementById("p2Vol");
+    const p2Hint = document.getElementById("p2Hint");
+    const p2Progress = document.getElementById("p2Progress");
+
+    audio.loop = true;
+    audio.volume = Number(p2Vol.value);
+
+    function fmt(sec) {
+      if (!isFinite(sec) || sec < 0) sec = 0;
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60);
+      return `${m}:${s < 10 ? "0" : ""}${s}`;
+    }
+    function setHint(text, on) {
+      p2Hint.textContent = text;
+      p2Hint.classList.toggle("on", !!on);
+    }
+    async function safePlay() {
+      try {
+        const p = audio.play(); // Promise [web:173]
+        if (p !== undefined) await p;
+        p2Icon.textContent = "⏸";
+        setHint("Suena hermoso…", true);
+      } catch (e) {
+        // Autoplay bloqueado hasta gesto [web:145]
+        setHint("Toca play otra vez", false);
+      }
+    }
+    function pause() {
+      audio.pause();
+      p2Icon.textContent = "▶";
+      setHint("En pausa", false);
+    }
+
+    p2Play.addEventListener("click", () =>
+      audio.paused ? safePlay() : pause(),
+    );
+    p2Vol.addEventListener(
+      "input",
+      () => (audio.volume = Number(p2Vol.value)),
+    );
+    audio.addEventListener(
+      "loadedmetadata",
+      () => (p2Dur.textContent = fmt(audio.duration)),
+    );
+    audio.addEventListener("timeupdate", () => {
+      p2Time.textContent = fmt(audio.currentTime);
+      const pct =
+        audio.duration && isFinite(audio.duration)
+          ? (audio.currentTime / audio.duration) * 100
+          : 0;
+      p2Fill.style.width = `${Math.min(100, Math.max(0, pct))}%`;
+    });
+    p2Progress.addEventListener("click", (e) => {
+      if (!audio.duration || !isFinite(audio.duration)) return;
+      const rect = p2Progress.getBoundingClientRect();
+      const x = Math.min(rect.width, Math.max(0, e.clientX - rect.left));
+      audio.currentTime = (x / rect.width) * audio.duration;
+    });
+
+    openBtn.addEventListener("click", async () => {
+      intro.classList.add("fade-out");
+      setTimeout(() => {
+        intro.style.display = "none";
+        card.classList.add("visible");
+      }, 650);
+
+      // Primer gesto del usuario: intenta reproducir música (política autoplay) [web:145]
+      await safePlay();
+    });
+
+    // Botón No Juguetón
+    const btnNo = document.getElementById("btnNo");
+    const btnYes = document.querySelector(".btn.yes");
+    const msgs = [
+      "¿Estás segura?",
+      "¡Piénsalo bien!",
+      "¡Te quiero mucho!",
+      "¡No te alejes!",
+      "¡Te extraño!",
+      "¡Por favor!",
+      "¡Dáme un sí!",
+      "💔",
+      "¡No me digas que no!",
+      "¡Inténtalo!",
+    ];
+    let scaleYes = 1;
+    let scaleNo = 1;
+
+    function moveBtn() {
+      // 1. Mensaje aleatorio
+      const msg = msgs[Math.floor(Math.random() * msgs.length)];
+      btnNo.textContent = msg;
+
+      // 2. Hacer crecer el botón Sí (con límite responsivo)
+      // En móvil (menos de 480px) limitamos a 2.5x, en desktop a 4x
+      const maxScale = window.innerWidth < 480 ? 2.5 : 4;
+
+      if (scaleYes < maxScale) {
+        scaleYes += 0.2;
+      }
+
+      btnYes.style.transform = `scale(${scaleYes})`;
+      btnYes.style.transition =
+        "transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)";
+
+      // 3. Hacer pequeño el botón No (pero no desaparecer)
+      // Reducimos menos agresivamente y paramos en 0.6 para que sea legible
+      scaleNo -= 0.05;
+      if (scaleNo < 0.6) scaleNo = 0.6;
+
+      // 4. Mover botón No (Lógica Robust)
+      const cardRect = card.getBoundingClientRect();
+      const btnRect = btnNo.getBoundingClientRect();
+      // Como btnRect cambia con el scale, mejor usamos dimensiones sin scale si es posible,
+      // pero getBoundingClientRect es lo que tenemos visualmente. Está bien.
+
+      const padding = 20;
+
+      // Calcular límites de desplazamiento (Translation Limits)
+      // Cuánto puede moverse hacia arriba (negativo), abajo (positivo), izq (neg), der (pos)
+      // desde su posición ACTUAL (que ya incluye el transform previo, ojo).
+
+      // PERO: style.transform sobreescribe el anterior.
+      // Así que calculamos el desplazamiento necesario desde la posición ORIGINAL (flow position).
+      // El problema es que getBoundingClientRect nos da la posición TRANSFORMADA.
+
+      // Solución Simple: Calcular límites absolutos basados en el offset relativo al card.
+
+      // Posición del botón relativa al viewport (SIESTUVIERA en pos original 0,0 translate)
+      // Esto es difícil de saber sin quitar el transform.
+
+      // Alternativa Mejorada: Generar coordenadas aleatorias dentro del rect del card,
+      // y restar la posición inicial del botón dentro del card.
+
+      // 1. Dónde está el botón originalmente dentro del card?
+      // Esta es la parte difícil dinámica.
+      // Truco: Usar position: absolute en el botón después del primer hover.
+
+      if (btnNo.style.position !== "absolute") {
+        // Primera vez: cambiar a absolute manteniendo su posición visual
+        const offsetLeft = btnNo.offsetLeft;
+        const offsetTop = btnNo.offsetTop;
+
+        btnNo.style.position = "absolute";
+        btnNo.style.left = `${offsetLeft}px`;
+        btnNo.style.top = `${offsetTop}px`;
+        // Quitamos margenes para que no afecten
+        btnNo.style.margin = "0";
+        // Ahora el botón está en coordenadas locales del padre (card o actions?)
+        // actions es flex, card es relative (ver css).
+        // Si actions no es relative, el absolute será relativo a card.
+        // Card tiene position: relative (line 104). Actions no.
+        // Entonces offsetLeft/Top son relativos a... offsetParent.
+        // Posiblemente .actions si tuviera relative, o main, o card.
+        // Vamos a forzar coordenadas relativas a Card.
+      }
+
+      // Nueva lógica: Moverse a una posición aleatoria (left/top) DENTRO del card.
+      const maxX = cardRect.width - btnRect.width - padding;
+      const maxY = cardRect.height - btnRect.height - padding;
+
+      const randomX = Math.max(padding, Math.random() * maxX);
+      const randomY = Math.max(padding, Math.random() * maxY);
+
+      // Aplicar nuevas coordenadas (como ahora es absolute, usamos left/top, o alteramos translate manteniendolo en 0,0 flow)
+      // Como ya cambiamos a absolute, mejor usamos left/top transition.
+
+      btnNo.style.left = `${randomX}px`;
+      btnNo.style.top = `${randomY}px`;
+      btnNo.style.transform = `scale(${scaleNo})`; // Solo escala
+      btnNo.style.transition = "all 0.4s cubic-bezier(0.25, 1, 0.5, 1)";
+    }
+
+    // Eventos
+    btnNo.addEventListener("mouseover", moveBtn);
+    btnNo.addEventListener("click", (e) => {
+      e.preventDefault();
+      moveBtn();
+    });
+    btnNo.addEventListener("touchstart", (e) => {
+      e.preventDefault();
+      moveBtn();
+    });
+  </script>
+</body>
+
+</html>

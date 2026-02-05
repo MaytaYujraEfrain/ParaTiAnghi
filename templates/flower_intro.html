@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ✅ Tu CSS real está en static/flores/css/main.css -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='flores/css/main.css') }}" />
+
+  <!-- ✅ Icon -->
+  <link rel="icon" href="{{ url_for('static', filename='flores/img/flowers.png') }}" type="image/png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='flores/img/image.png') }}" />
+
+  <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='flores/img/image.png') }}" />
+
+  <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='flores/img/image.png') }}" />
+
+  <title>ParaTi</title>
+
+  <style>
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    /* Overlay para activar audio (por políticas del navegador) */
+    #startAudio {
+      position: fixed;
+      inset: 0;
+      display: none;
+      /* se muestra solo si el autoplay falla */
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      z-index: 9999;
+      border: 0;
+      cursor: pointer;
+      padding: 24px;
+    }
+
+    #startAudio .card {
+      font-family: "Outfit", sans-serif;
+      color: #fff;
+      text-align: center;
+      max-width: 520px;
+      width: min(520px, 92vw);
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      border-radius: 22px;
+      padding: 18px 18px;
+    }
+
+    #startAudio .title {
+      font-size: 1.1rem;
+      margin: 0 0 8px 0;
+    }
+
+    #startAudio .subtitle {
+      font-size: 0.95rem;
+      margin: 0 0 14px 0;
+      opacity: 0.9;
+    }
+
+    #startAudio .cta {
+      display: inline-block;
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+    }
+  </style>
+</head>
+
+<body class="container">
+  <!-- ✅ AUDIO -->
+  <audio id="bgAudio" src="{{ url_for('static', filename='audio/audio3.mp3') }}" autoplay loop preload="auto"></audio>
+
+  <!-- Botón/overlay: aparece si el autoplay con sonido está bloqueado -->
+  <button id="startAudio" type="button" aria-label="Activar audio">
+    <div class="card">
+      <p class="title">Activa el audio</p>
+      <p class="subtitle">Toca una vez para reproducir la música.</p>
+      <span class="cta">Tocar para iniciar</span>
+    </div>
+  </button>
+
+  <h1 class="titulo" style="
+        font-family: &quot;Outfit&quot;, sans-serif;
+        color: #fff;
+        text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        font-size: 1.5rem;
+        background: rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        border-radius: 20px;
+        backdrop-filter: blur(4px);
+      "></h1>
+
+  <div class="night"></div>
+
+  <div class="flowers">
+    <div class="flower flower--1">
+      <div class="flower__leafs flower__leafs--1">
+        <div class="flower__leaf flower__leaf--1"></div>
+        <div class="flower__leaf flower__leaf--2"></div>
+        <div class="flower__leaf flower__leaf--3"></div>
+        <div class="flower__leaf flower__leaf--4"></div>
+        <div class="flower__white-circle"></div>
+
+        <div class="flower__light flower__light--1"></div>
+        <div class="flower__light flower__light--2"></div>
+        <div class="flower__light flower__light--3"></div>
+        <div class="flower__light flower__light--4"></div>
+        <div class="flower__light flower__light--5"></div>
+        <div class="flower__light flower__light--6"></div>
+        <div class="flower__light flower__light--7"></div>
+        <div class="flower__light flower__light--8"></div>
+      </div>
+      <div class="flower__line">
+        <div class="flower__line__leaf flower__line__leaf--1"></div>
+        <div class="flower__line__leaf flower__line__leaf--2"></div>
+        <div class="flower__line__leaf flower__line__leaf--3"></div>
+        <div class="flower__line__leaf flower__line__leaf--4"></div>
+        <div class="flower__line__leaf flower__line__leaf--5"></div>
+        <div class="flower__line__leaf flower__line__leaf--6"></div>
+      </div>
+    </div>
+
+    <div class="flower flower--2">
+      <div class="flower__leafs flower__leafs--2">
+        <div class="flower__leaf flower__leaf--1"></div>
+        <div class="flower__leaf flower__leaf--2"></div>
+        <div class="flower__leaf flower__leaf--3"></div>
+        <div class="flower__leaf flower__leaf--4"></div>
+        <div class="flower__white-circle"></div>
+
+        <div class="flower__light flower__light--1"></div>
+        <div class="flower__light flower__light--2"></div>
+        <div class="flower__light flower__light--3"></div>
+        <div class="flower__light flower__light--4"></div>
+        <div class="flower__light flower__light--5"></div>
+        <div class="flower__light flower__light--6"></div>
+        <div class="flower__light flower__light--7"></div>
+        <div class="flower__light flower__light--8"></div>
+      </div>
+      <div class="flower__line">
+        <div class="flower__line__leaf flower__line__leaf--1"></div>
+        <div class="flower__line__leaf flower__line__leaf--2"></div>
+        <div class="flower__line__leaf flower__line__leaf--3"></div>
+        <div class="flower__line__leaf flower__line__leaf--4"></div>
+      </div>
+    </div>
+
+    <div class="flower flower--3">
+      <div class="flower__leafs flower__leafs--3">
+        <div class="flower__leaf flower__leaf--1"></div>
+        <div class="flower__leaf flower__leaf--2"></div>
+        <div class="flower__leaf flower__leaf--3"></div>
+        <div class="flower__leaf flower__leaf--4"></div>
+        <div class="flower__white-circle"></div>
+
+        <div class="flower__light flower__light--1"></div>
+        <div class="flower__light flower__light--2"></div>
+        <div class="flower__light flower__light--3"></div>
+        <div class="flower__light flower__light--4"></div>
+        <div class="flower__light flower__light--5"></div>
+        <div class="flower__light flower__light--6"></div>
+        <div class="flower__light flower__light--7"></div>
+        <div class="flower__light flower__light--8"></div>
+      </div>
+      <div class="flower__line">
+        <div class="flower__line__leaf flower__line__leaf--1"></div>
+        <div class="flower__line__leaf flower__line__leaf--2"></div>
+        <div class="flower__line__leaf flower__line__leaf--3"></div>
+        <div class="flower__line__leaf flower__line__leaf--4"></div>
+      </div>
+    </div>
+
+    <!-- Flower 4 -->
+    <div class="flower flower--4">
+      <div class="flower__leafs flower__leafs--2">
+        <div class="flower__leaf flower__leaf--1"></div>
+        <div class="flower__leaf flower__leaf--2"></div>
+        <div class="flower__leaf flower__leaf--3"></div>
+        <div class="flower__leaf flower__leaf--4"></div>
+        <div class="flower__white-circle"></div>
+
+        <div class="flower__light flower__light--1"></div>
+        <div class="flower__light flower__light--2"></div>
+        <div class="flower__light flower__light--3"></div>
+        <div class="flower__light flower__light--4"></div>
+        <div class="flower__light flower__light--5"></div>
+        <div class="flower__light flower__light--6"></div>
+        <div class="flower__light flower__light--7"></div>
+        <div class="flower__light flower__light--8"></div>
+      </div>
+      <div class="flower__line">
+        <div class="flower__line__leaf flower__line__leaf--1"></div>
+        <div class="flower__line__leaf flower__line__leaf--2"></div>
+        <div class="flower__line__leaf flower__line__leaf--3"></div>
+        <div class="flower__line__leaf flower__line__leaf--4"></div>
+      </div>
+    </div>
+
+    <!-- Flower 5 -->
+    <div class="flower flower--5">
+      <div class="flower__leafs flower__leafs--3">
+        <div class="flower__leaf flower__leaf--1"></div>
+        <div class="flower__leaf flower__leaf--2"></div>
+        <div class="flower__leaf flower__leaf--3"></div>
+        <div class="flower__leaf flower__leaf--4"></div>
+        <div class="flower__white-circle"></div>
+
+        <div class="flower__light flower__light--1"></div>
+        <div class="flower__light flower__light--2"></div>
+        <div class="flower__light flower__light--3"></div>
+        <div class="flower__light flower__light--4"></div>
+        <div class="flower__light flower__light--5"></div>
+        <div class="flower__light flower__light--6"></div>
+        <div class="flower__light flower__light--7"></div>
+        <div class="flower__light flower__light--8"></div>
+      </div>
+      <div class="flower__line">
+        <div class="flower__line__leaf flower__line__leaf--1"></div>
+        <div class="flower__line__leaf flower__line__leaf--2"></div>
+        <div class="flower__line__leaf flower__line__leaf--3"></div>
+        <div class="flower__line__leaf flower__line__leaf--4"></div>
+      </div>
+    </div>
+
+    <!-- Flower 6 -->
+    <div class="flower flower--6">
+      <div class="flower__leafs flower__leafs--2">
+        <div class="flower__leaf flower__leaf--1"></div>
+        <div class="flower__leaf flower__leaf--2"></div>
+        <div class="flower__leaf flower__leaf--3"></div>
+        <div class="flower__leaf flower__leaf--4"></div>
+        <div class="flower__white-circle"></div>
+
+        <div class="flower__light flower__light--1"></div>
+        <div class="flower__light flower__light--2"></div>
+        <div class="flower__light flower__light--3"></div>
+        <div class="flower__light flower__light--4"></div>
+        <div class="flower__light flower__light--5"></div>
+        <div class="flower__light flower__light--6"></div>
+        <div class="flower__light flower__light--7"></div>
+        <div class="flower__light flower__light--8"></div>
+      </div>
+      <div class="flower__line">
+        <div class="flower__line__leaf flower__line__leaf--1"></div>
+        <div class="flower__line__leaf flower__line__leaf--2"></div>
+        <div class="flower__line__leaf flower__line__leaf--3"></div>
+        <div class="flower__line__leaf flower__line__leaf--4"></div>
+      </div>
+    </div>
+
+    <!-- Flower 7 -->
+    <div class="flower flower--7">
+      <div class="flower__leafs flower__leafs--1">
+        <div class="flower__leaf flower__leaf--1"></div>
+        <div class="flower__leaf flower__leaf--2"></div>
+        <div class="flower__leaf flower__leaf--3"></div>
+        <div class="flower__leaf flower__leaf--4"></div>
+        <div class="flower__white-circle"></div>
+
+        <div class="flower__light flower__light--1"></div>
+        <div class="flower__light flower__light--2"></div>
+        <div class="flower__light flower__light--3"></div>
+        <div class="flower__light flower__light--4"></div>
+        <div class="flower__light flower__light--5"></div>
+        <div class="flower__light flower__light--6"></div>
+        <div class="flower__light flower__light--7"></div>
+        <div class="flower__light flower__light--8"></div>
+      </div>
+      <div class="flower__line">
+        <div class="flower__line__leaf flower__line__leaf--1"></div>
+        <div class="flower__line__leaf flower__line__leaf--2"></div>
+        <div class="flower__line__leaf flower__line__leaf--3"></div>
+        <div class="flower__line__leaf flower__line__leaf--4"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ✅ Tus JS reales están en static/flores/ -->
+  <script src="{{ url_for('static', filename='flores/anim.js') }}"></script>
+  <script src="{{ url_for('static', filename='flores/main.js') }}"></script>
+
+  <!-- ✅ Script: autoplay + fallback (gesto del usuario) -->
+  <script>
+    const audio = document.getElementById("bgAudio");
+    const startBtn = document.getElementById("startAudio");
+
+    async function tryAutoplay() {
+      try {
+        // play() devuelve una Promise y puede fallar si el navegador bloquea autoplay con sonido [web:9]
+        await audio.play();
+        startBtn.style.display = "none";
+      } catch (err) {
+        // Autoplay con sonido bloqueado: se requiere interacción del usuario (click/tap) [web:1]
+        startBtn.style.display = "flex";
+      }
+    }
+
+    // Intentar apenas cargue
+    window.addEventListener("load", tryAutoplay);
+
+    // Primer gesto del usuario => permitido reproducir con audio
+    startBtn.addEventListener("click", async () => {
+      try {
+        await audio.play();
+        startBtn.style.display = "none";
+      } catch (err) {
+        console.error(err);
+      }
+    });
+
+    // Opcional: también desbloquear con cualquier click en pantalla
+    document.addEventListener(
+      "click",
+      async () => {
+        if (startBtn.style.display !== "none") return;
+        // nada
+      },
+      { once: true },
+    );
+  </script>
+</body>
+
+</html>
